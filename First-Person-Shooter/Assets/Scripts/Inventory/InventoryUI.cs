@@ -25,6 +25,7 @@ public class InventoryUI : MonoBehaviour
         {
             if (slot.IsEmpty() || slot.currentItem.inventoryID == item.inventoryID)
             {
+
                 slot.AddItemOrIncreaseQuantity(item); // Добавляем предмет в пустой слот
                 return;
             }

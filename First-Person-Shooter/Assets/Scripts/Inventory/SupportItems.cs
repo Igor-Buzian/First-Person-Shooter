@@ -10,7 +10,7 @@ public class SupportItems : MonoBehaviour
 
     public void AddObjectInInventory()
     {
-        InventoryLogic item = new InventoryLogic(inventoryId, objectSprite);
+        InventoryLogic item = new InventoryLogic(inventoryId, objectSprite, gameObject);
         inventory.AddItem(item);
     }
 }

@@ -9,12 +9,13 @@ public class InventoryLogic : EventArgs
     public int inventoryID; // Уникальный идентификатор предмета
     public Sprite spriteObject; // Спрайт предмета
     public int quantity; // Количество предметов
-
-    public InventoryLogic(int id, Sprite sprite)
+    public GameObject Item;
+    public InventoryLogic(int id, Sprite sprite, GameObject item)
     {
         inventoryID = id;
         spriteObject = sprite;
         quantity = 1; // Начальное количество
+        Item = item;
     }
 }
 public class GameCharacter : MonoBehaviour
