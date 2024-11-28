@@ -10,11 +10,14 @@ TagManager:
   - Fly
   - Animal
   - Water
+  - Trees
+  - Terrain
+  - Walls
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
