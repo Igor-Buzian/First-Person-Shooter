@@ -1,3 +1,4 @@
+using MalbersAnimations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,24 @@ public class Inventory : MonoBehaviour
     // Событие для обновления интерфейса
     public event Action<InventoryLogic> OnItemAdded;
 
+    [Header("Player Input")]
+    public MalbersInput malbersPlayerInput;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             useInventory = !useInventory;
+            if(useInventory)
+            {
+                Time.timeScale = 0.0001f;
+                malbersPlayerInput.enabled = false;
+
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                malbersPlayerInput.enabled = true;
+            }
             inventoryPanel.SetActive(useInventory);
         }
     }

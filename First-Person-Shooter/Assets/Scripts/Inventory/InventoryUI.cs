@@ -29,11 +29,6 @@ public class InventoryUI : MonoBehaviour
                 slot.AddItemOrIncreaseQuantity(item); // Добавляем предмет в пустой слот
                 return;
             }
-/*            else if (slot.currentItem.inventoryID == item.inventoryID)
-            {
-                slot.IncreaseQuantity(item); // Увеличиваем количество в уже занятом слоте
-                return;
-            }*/
         }
     }
 }

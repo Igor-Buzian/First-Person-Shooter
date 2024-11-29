@@ -1,4 +1,5 @@
 using MalbersAnimations;
+using MalbersAnimations.Weapons;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +8,8 @@ public class InventorySlot : MonoBehaviour
     public Image itemImage; // UI-элемент для отображения спрайта предмета
     public Text itemQuantityText; // UI-элемент для отображения количества предметов
     public InventoryLogic currentItem; // Текущий предмет в слоте
-
+    public MWeaponManager mWeaponManager;
     private Button slotButton;
-    public MWeaponManager PlayerMWeaponManager;
     private void Start()
     {
         // Проверяем наличие необходимых компонентов
@@ -22,7 +22,7 @@ public class InventorySlot : MonoBehaviour
         }
         // Настраиваем начальный обработчик кнопки
         slotButton.onClick.RemoveAllListeners();
-        slotButton.onClick.AddListener(OnClickLogic);
+
     }
 
     public void AddItemOrIncreaseQuantity(InventoryLogic item)
@@ -48,18 +48,21 @@ public class InventorySlot : MonoBehaviour
             return;
         }
 
-        // Настраиваем кнопку в зависимости от типа предмета
         Debug.Log($"[OnClickLogic] Нажата кнопка для предмета: {currentItem.Item.name}");
+
+        // Выполняем действие напрямую
         switch (currentItem.inventoryID)
         {
             case 0:
-                SetupSlotButton(currentItem.Item);
-                break;
             case 1:
                 SetupSlotButton(currentItem.Item);
                 break;
             case 2:
-                Debug.LogWarning("Обработчик для ID 2 не настроен.");
+            case 3:
+                AddBullets(currentItem.Item);
+                break;
+            case 4:
+                HealthPlayer(currentItem.Item);
                 break;
             default:
                 Debug.LogWarning($"[OnClickLogic] Неизвестный inventoryID: {currentItem.inventoryID}");
@@ -67,9 +70,70 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
-    private void SetupSlotButton(GameObject weaponObject)
+    private void AddBullets(GameObject weaponObject)
     {
         if (slotButton == null)
+        {
+            Debug.LogError("[AddBullets] SlotButton не установлен!");
+            return;
+        }
+
+        if (weaponObject == null)
+        {
+            Debug.LogError("[AddBullets] weaponObject равен null!");
+            return;
+        }
+
+        // Увеличиваем патроны сразу
+        var shootable = weaponObject.GetComponent<MShootable>();
+        if (shootable == null)
+        {
+            Debug.LogError("[AddBullets] У объекта weaponObject отсутствует компонент MShootable!");
+            return;
+        }
+
+        shootable.TotalAmmo += 30;
+        Debug.Log($"Патроны добавлены: {shootable.TotalAmmo} для оружия {weaponObject.name}");
+
+        // Удаляем предмет после успешного добавления патронов
+        RemoveItem();
+    }
+
+    private void HealthPlayer(GameObject weaponObject)
+    {
+        if (slotButton == null)
+        {
+            Debug.LogError("[HealthPlayer] SlotButton не установлен!");
+            return;
+        }
+
+        if (weaponObject == null)
+        {
+            Debug.LogError("[HealthPlayer] weaponObject равен null!");
+            return;
+        }
+
+        // Увеличиваем здоровье сразу
+        var stats = weaponObject.GetComponent<Stats>();
+        if (stats == null)
+        {
+            Debug.LogError("[HealthPlayer] У объекта weaponObject отсутствует компонент Stats!");
+            return;
+        }
+
+        var healthStat = stats.stats[0]; // Предполагаем, что stats[0] — это здоровье
+        healthStat.Value = Mathf.Min(healthStat.Value + 20, 100);
+        Debug.Log($"Здоровье увеличено до {healthStat.Value} для объекта {weaponObject.name}");
+
+        // Удаляем предмет после успешного увеличения здоровья
+        RemoveItem();
+    }
+
+
+
+    private void SetupSlotButton(GameObject weaponObject)
+    {
+        if (slotButton == null || mWeaponManager == null)
         {
             Debug.LogError("[SetupSlotButton] SlotButton не установлен!");
             return;
@@ -84,15 +148,8 @@ public class InventorySlot : MonoBehaviour
         slotButton.onClick.RemoveAllListeners();
         slotButton.onClick.AddListener(() =>
         {
-            if (PlayerMWeaponManager != null)
-            {
-                PlayerMWeaponManager.Holster_SetWeapon(weaponObject);
-                Debug.Log($"Оружие {weaponObject.name} передано в Holster_SetWeapon.");
-            }
-            else
-            {
-                Debug.LogError("MWeaponManager не найден в сцене!");
-            }
+            mWeaponManager.Holster_SetWeapon(weaponObject);
+            Debug.Log($"Оружие {weaponObject.name} передано в Holster_SetWeapon.");
         });
     }
 
@@ -110,9 +167,14 @@ public class InventorySlot : MonoBehaviour
 
     public void RemoveItem()
     {
-        currentItem = null;
-        itemImage.enabled = false;
-        itemQuantityText.text = "0";
+        currentItem.quantity--;
+        if(currentItem.quantity <= 0)
+        {
+            currentItem = null;
+            itemImage.enabled = false;
+            itemQuantityText.text = "0";
+        }
+        UpdateQuantityText();
     }
 
     public bool IsEmpty()
