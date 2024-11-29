@@ -22,7 +22,7 @@ MonoBehaviour:
   - {fileID: 2376756477599933328}
   transitions:
   - decision: {fileID: 6644325200194905671}
-    trueState: {fileID: 11400000, guid: 3288066b9d5391c4cac224f8dbaa2533, type: 2}
+    trueState: {fileID: 11400000, guid: 97ced9ba0f17f6b498eb37f7c5bd330f, type: 2}
     falseState: {fileID: 0}
   - decision: {fileID: 8305788677959419912}
     trueState: {fileID: 11400000, guid: acb715166787aad4997e461800b4d5b7, type: 2}
@@ -74,8 +74,8 @@ MonoBehaviour:
   WaitForPreviousTask: 0
   LookAtOnArrival: 0
   IgnoreWaitTime: 0
-  patrolType: 0
-  RuntimeSet: {fileID: 0}
+  patrolType: 1
+  RuntimeSet: {fileID: 11400000, guid: 402f2ee4acec96a45af153d2be693415, type: 2}
   rtype: 1
   RTIndex:
     UseConstant: 1

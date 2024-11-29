@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b00a63bfc37e3794ea3b0af5a3c6381e, type: 3}
-  m_Name: D_Player Near
+  m_Name: Ptrol
   m_EditorClassIdentifier: 
   active: 1
   Description: The Animal will look for an Object using a cone view
@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e33e187dc72d4a48aaede99913c6393, type: 3}
-  m_Name: ACW Look For Player Near
+  m_Name: Ptrol
   m_EditorClassIdentifier: 
   ID:
     UseConstant: 1
