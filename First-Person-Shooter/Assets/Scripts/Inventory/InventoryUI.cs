@@ -18,7 +18,7 @@ public class InventoryUI : MonoBehaviour
     /// Update UI logic for Inventory
     /// </summary>
     /// <param name="item"></param>
-    private void UpdateUI(InventoryLogic item)
+    public void UpdateUI(InventoryLogic item)
     {
         // Найти слот для предмета
         foreach (var slot in inventorySlots)

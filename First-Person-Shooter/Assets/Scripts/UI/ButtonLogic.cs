@@ -7,7 +7,7 @@ public class ButtonLogic : MonoBehaviour
 {
     public void PlayButton()
     {
-        SceneManager.LoadScene("GenerationScene");
+        SceneManager.LoadScene("lvl 2");
     }
     public void QuitButton()
     {
@@ -16,11 +16,11 @@ public class ButtonLogic : MonoBehaviour
     public void RespawnButton()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("GenerationScene");
+        SceneManager.LoadScene("lvl 2");
     }
     public void BackToMenuButton()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("StartScene");
+        SceneManager.LoadScene("lvl 2");
     }
 }

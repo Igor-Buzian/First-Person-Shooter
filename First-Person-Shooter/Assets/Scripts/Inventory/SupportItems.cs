@@ -1,5 +1,20 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+[System.Serializable]
+public class InventorySlotData
+{
+    public string itemName;
+    public int inventoryID;
+    public int quantity;
+    public string spritePath;
+}
+
+[System.Serializable]
+public class InventoryData
+{
+    public List<InventorySlotData> slots = new List<InventorySlotData>();
+}
 
 public class SupportItems : MonoBehaviour
 {

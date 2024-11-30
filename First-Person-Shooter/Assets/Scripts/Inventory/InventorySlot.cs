@@ -10,8 +10,14 @@ public class InventorySlot : MonoBehaviour
     public InventoryLogic currentItem; // Текущий предмет в слоте
     public MWeaponManager mWeaponManager;
     private Button slotButton;
+    public bool isActive;
     private void Start()
     {
+        if (!isActive)
+        {
+            this.enabled = false; // Отключаем скрипт, если isActive == false
+            return;
+        }
         // Проверяем наличие необходимых компонентов
         slotButton = GetComponent<Button>();
         if (itemImage == null || slotButton == null)
