@@ -727,7 +727,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 620553837}
         m_TargetAssemblyTypeName: ButtonLogic, Assembly-CSharp
-        m_MethodName: PlayButton
+        m_MethodName: NextLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4947,10 +4947,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 153802235871806895, guid: adcd406747f582e4d80c723aa505c855, type: 3}
       propertyPath: Editor_Tabs1
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 153802235871806895, guid: adcd406747f582e4d80c723aa505c855, type: 3}
       propertyPath: Editor_Tabs2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 153802235871806895, guid: adcd406747f582e4d80c723aa505c855, type: 3}
+      propertyPath: OnEquiped.m_PersistentCalls.m_Calls.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 267090854957756925, guid: adcd406747f582e4d80c723aa505c855, type: 3}
@@ -8125,7 +8129,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 620553837}
         m_TargetAssemblyTypeName: ButtonLogic, Assembly-CSharp
-        m_MethodName: PlayButton
+        m_MethodName: BackToMenuButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

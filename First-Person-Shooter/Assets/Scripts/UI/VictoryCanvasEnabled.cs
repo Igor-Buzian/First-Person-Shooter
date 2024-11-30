@@ -8,6 +8,7 @@ public class VictoryCanvasEnabled : MonoBehaviour
     public void NextButton()
     {
         OnVictoryCanvasEnabled?.Invoke(); // Уведомляем подписчиков
+        PlayerPrefs.SetInt("Pass1Lvl", 1);
         Debug.Log("VictoryCanvasEnabled активирован, событие вызвано.");
     }
 }

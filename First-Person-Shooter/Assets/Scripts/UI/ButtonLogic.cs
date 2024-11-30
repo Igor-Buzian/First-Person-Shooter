@@ -7,13 +7,22 @@ public class ButtonLogic : MonoBehaviour
 {
     public void PlayButton()
     {
-        SceneManager.LoadScene("lvl 2");
+        if (PlayerPrefs.HasKey("Pass1Lvl"))
+        {
+            SceneManager.LoadScene("lvl 2");
+        }
+        else
+        {
+            SceneManager.LoadScene("lvl 1");
+        }
+        
+
     }
     public void QuitButton()
     {
         Application.Quit();
     }
-    public void RespawnButton()
+    public void NextLevel()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene("lvl 2");
@@ -21,6 +30,6 @@ public class ButtonLogic : MonoBehaviour
     public void BackToMenuButton()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("lvl 2");
+        SceneManager.LoadScene("Start Scene");
     }
 }
