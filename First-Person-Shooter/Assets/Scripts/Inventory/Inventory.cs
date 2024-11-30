@@ -58,7 +58,7 @@ public class Inventory : MonoBehaviour
     private void Update()
     {
         // Открытие/закрытие инвентаря
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             useInventory = !useInventory;
             if (useInventory)

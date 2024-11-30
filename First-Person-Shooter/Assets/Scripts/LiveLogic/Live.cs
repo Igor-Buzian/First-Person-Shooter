@@ -19,6 +19,7 @@ public class Live : MonoBehaviour
     IEnumerator LoadCurrentScene()
     {
         yield return new WaitForSeconds(5f);
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     /// <summary>
