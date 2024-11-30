@@ -29,7 +29,7 @@ public class Inventory : MonoBehaviour
             victoryCanvasComponent.OnVictoryCanvasEnabled += SaveInventory;
         }
         LoadInventory();
-         // ClearInventory();
+       //   ClearInventory();
     }
     private void Start()
     {
@@ -81,6 +81,10 @@ public class Inventory : MonoBehaviour
         {
             if (existingItem.inventoryID == item.inventoryID)
             {
+                if (item.quantity <= 0)
+                {
+                    return;
+                }
                 item.quantity++; // Увеличиваем количество
                 OnItemAdded?.Invoke(item);
                 return;
@@ -98,15 +102,29 @@ public class Inventory : MonoBehaviour
 
         foreach (var item in items)
         {
-            var slotData = new InventorySlotData
+            if (item.quantity == 0)
             {
-                itemName = item.Item.name,
-                inventoryID = item.inventoryID,
-                quantity = item.quantity,
-                spritePath = item.spriteObject != null ? item.spriteObject.name : ""
-            };
-
-            inventoryData.Add(slotData);
+                var slotData = new InventorySlotData
+                {
+                    itemName = null,
+                    inventoryID = -1,
+                    quantity = 0,
+                    spritePath =  ""
+                };
+                inventoryData.Add(slotData);
+            }
+            else
+            {
+                var slotData = new InventorySlotData
+                {
+                    itemName = item.Item.name,
+                    inventoryID = item.inventoryID,
+                    quantity = item.quantity,
+                    spritePath = item.spriteObject != null ? item.spriteObject.name : ""
+                };
+                inventoryData.Add(slotData);
+            }
+           
         }
 
         string json = JsonUtility.ToJson(new InventoryData { slots = inventoryData }, true);
