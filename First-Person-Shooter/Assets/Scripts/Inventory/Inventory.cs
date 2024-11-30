@@ -29,7 +29,7 @@ public class Inventory : MonoBehaviour
             victoryCanvasComponent.OnVictoryCanvasEnabled += SaveInventory;
         }
         LoadInventory();
-        //ClearInventory();
+        //  ClearInventory();
     }
     private void Start()
     {

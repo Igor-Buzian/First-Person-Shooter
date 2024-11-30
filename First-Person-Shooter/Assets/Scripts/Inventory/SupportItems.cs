@@ -23,10 +23,16 @@ public class SupportItems : MonoBehaviour
     public Inventory inventory; // Ссылка на инвентарь
     public event EventHandler<InventoryLogic> OnItemCollected; // Событие для уведомления о сборе
     public GameObject ItemForConnect;
+    InventoryLogic item;
 
-    private void OnCollisionEnter(Collision collision)
+    private void Start()
     {
-        if (collision.gameObject.CompareTag("Player"))
+        item = new InventoryLogic(inventoryId, objectSprite, ItemForConnect);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
         {
             if (inventoryId > 1)
             {
@@ -38,7 +44,6 @@ public class SupportItems : MonoBehaviour
 
     public void AddObjectInInventory()
     {
-        InventoryLogic item = new InventoryLogic(inventoryId, objectSprite, ItemForConnect);
         inventory.AddItem(item);
     }
 }
