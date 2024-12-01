@@ -29,7 +29,7 @@ public class Inventory : MonoBehaviour
             victoryCanvasComponent.OnVictoryCanvasEnabled += SaveInventory;
         }
         LoadInventory();
-       //   ClearInventory();
+        //  ClearInventory();
     }
     private void Start()
     {
@@ -79,52 +79,38 @@ public class Inventory : MonoBehaviour
     {
         foreach (var existingItem in items)
         {
+            // Проверяем, есть ли предмет с таким же ID
             if (existingItem.inventoryID == item.inventoryID)
             {
-                if (item.quantity <= 0)
-                {
-                    return;
-                }
-                item.quantity++; // Увеличиваем количество
-                OnItemAdded?.Invoke(item);
+                existingItem.quantity += item.quantity; // Увеличиваем количество
+                OnItemAdded?.Invoke(existingItem);     // Обновляем интерфейс
                 return;
             }
         }
 
-        items.Add(item); // Новый предмет
+        // Если предмет новый, добавляем его в инвентарь
+        items.Add(item);
         Debug.Log($"Added new item with ID {item.inventoryID}. Quantity: {item.quantity}");
         OnItemAdded?.Invoke(item);
     }
+
 
     public void SaveInventory()
     {
         var inventoryData = new List<InventorySlotData>();
 
+        // Сохраняем данные всех предметов в инвентаре
         foreach (var item in items)
         {
-            if (item.quantity == 0)
+            var slotData = new InventorySlotData
             {
-                var slotData = new InventorySlotData
-                {
-                    itemName = null,
-                    inventoryID = -1,
-                    quantity = 0,
-                    spritePath =  ""
-                };
-                inventoryData.Add(slotData);
-            }
-            else
-            {
-                var slotData = new InventorySlotData
-                {
-                    itemName = item.Item.name,
-                    inventoryID = item.inventoryID,
-                    quantity = item.quantity,
-                    spritePath = item.spriteObject != null ? item.spriteObject.name : ""
-                };
-                inventoryData.Add(slotData);
-            }
-           
+                itemName = item.quantity > 0 ? item.Item.name : null, // null для пустых слотов
+                inventoryID = item.quantity > 0 ? item.inventoryID : -1, // -1 для пустых слотов
+                quantity = item.quantity, // Сохраняем количество, включая 0
+                spritePath = item.spriteObject != null && item.quantity > 0 ? item.spriteObject.name : "" // Сохраняем путь для спрайта
+            };
+
+            inventoryData.Add(slotData);
         }
 
         string json = JsonUtility.ToJson(new InventoryData { slots = inventoryData }, true);
@@ -132,6 +118,7 @@ public class Inventory : MonoBehaviour
 
         Debug.Log($"Инвентарь сохранен в файл: {saveFilePath}");
     }
+
     public void LoadInventory()
     {
         if (!File.Exists(saveFilePath))

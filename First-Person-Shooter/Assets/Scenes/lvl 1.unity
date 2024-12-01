@@ -50407,6 +50407,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b40ee49102b6e4fa7efe7b1e2ff2e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7117139278947829418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5175850389482318251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d4197b1b0d0532448541085c812a704, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterBody: {fileID: 5170218139365809361}
+  cinemachineCamera: {fileID: 1338988710}
+  minVerticalAngle: -45
+  maxVerticalAngle: 45
 --- !u!1 &7118599760592794884
 GameObject:
   m_ObjectHideFlags: 0
@@ -52981,7 +52997,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3084425874824347344, guid: 3f06e67a3ae76ab408717716d2c52a02, type: 3}
-      insertIndex: 10
+      insertIndex: 2
+      addedObject: {fileID: 7117139278947829418}
+    - targetCorrespondingSourceObject: {fileID: 3084425874824347344, guid: 3f06e67a3ae76ab408717716d2c52a02, type: 3}
+      insertIndex: 11
       addedObject: {fileID: 7117139278947829417}
   m_SourcePrefab: {fileID: 100100000, guid: 3f06e67a3ae76ab408717716d2c52a02, type: 3}
 --- !u!1 &8621442692940567942
