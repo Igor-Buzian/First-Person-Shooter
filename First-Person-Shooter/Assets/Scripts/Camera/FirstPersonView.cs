@@ -1,46 +1,54 @@
-
 using UnityEngine;
 using Cinemachine;
 
+
 public class FirstPersonView : MonoBehaviour
 {
-    public Transform characterBody; // Тело персонажа
-    public CinemachineVirtualCamera cinemachineCamera; // Ссылка на виртуальную камеру
+    public Transform characterBody; // The body of the character
+    public CinemachineVirtualCamera cinemachineCamera; // Reference to the virtual camera
 
     [Header("Camera Rotation Limits")]
-    public float minVerticalAngle = -45f; // Минимальный угол наклона камеры
-    public float maxVerticalAngle = 45f;  // Максимальный угол наклона камеры
+    public float minVerticalAngle = -45f; // Minimum vertical angle of the camera
+    public float maxVerticalAngle = 45f;  // Maximum vertical angle of the camera
 
-    private CinemachinePOV cinemachinePOV; // Контроллер вращения камеры
+    private CinemachinePOV cinemachinePOV; // Camera rotation controller
+
 
     private void Start()
     {
-        // Получаем компонент POV из Cinemachine Virtual Camera
+        // Get the POV component from the Cinemachine Virtual Camera
         cinemachinePOV = cinemachineCamera.GetCinemachineComponent<CinemachinePOV>();
         if (cinemachinePOV == null)
         {
-            Debug.LogError("CinemachinePOV компонент не найден! Проверьте настройку камеры.");
+            Debug.LogError("CinemachinePOV component not found! Check camera setup.");
         }
     }
 
+    /// <summary>
+    /// Called once per frame, after all Update methods.
+    /// Clamps the vertical rotation of the camera and rotates the character body.
+    /// </summary>
     private void LateUpdate()
     {
-        // Ограничиваем вертикальный угол вращения камеры
+        // Limit the vertical rotation angle of the camera
         if (cinemachinePOV != null)
         {
             cinemachinePOV.m_VerticalAxis.Value = Mathf.Clamp(cinemachinePOV.m_VerticalAxis.Value, minVerticalAngle, maxVerticalAngle);
         }
 
-        // Поворачиваем тело персонажа только по горизонтальной оси
+        // Rotate the character body according to the camera's horizontal rotation
         RotateCharacterWithCamera();
     }
 
+    /// <summary>
+    /// Rotates the character body to match the camera's horizontal rotation.
+    /// </summary>
     private void RotateCharacterWithCamera()
     {
-        // Получаем текущий горизонтальный угол вращения камеры
+        // Get the current horizontal rotation angle of the camera
         float cameraYaw = cinemachinePOV.m_HorizontalAxis.Value;
 
-        // Поворачиваем тело персонажа по горизонтальной оси (Y)
+        // Rotate the character body around the Y axis
         characterBody.rotation = Quaternion.Euler(0, cameraYaw, 0);
     }
 }

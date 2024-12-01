@@ -1,52 +1,61 @@
 using UnityEngine;
 
+/// <summary>
+/// Manages the UI for the inventory system. Updates item slots based on inventory changes.
+/// </summary>
 public class InventoryUI : MonoBehaviour
 {
-    public Inventory inventory; // Ссылка на инвентарь
-    public InventorySlot[] inventorySlots; // Массив слотов инвентаря
+    /// <summary>Reference to the inventory system.</summary>
+    public Inventory inventory;
 
+    /// <summary>Array of UI slots to represent inventory items.</summary>
+    public InventorySlot[] inventorySlots;
+
+    /// <summary>
+    /// Subscribes to the inventory's item-added event to update the UI.
+    /// </summary>
     private void Start()
     {
-        inventory.OnItemAdded += UpdateUI; // Подписываемся на событие
+        inventory.OnItemAdded += UpdateUI;
     }
 
+    /// <summary>
+    /// Unsubscribes from the inventory's item-added event when the UI is disabled.
+    /// </summary>
     private void OnDisable()
     {
-        inventory.OnItemAdded -= UpdateUI; // Отписываемся от события
+        inventory.OnItemAdded -= UpdateUI;
     }
+
     /// <summary>
-    /// Update UI logic for Inventory
+    /// Updates the UI when an item is added or its quantity changes.
+    /// Finds the appropriate slot or adds the item to an empty slot.
     /// </summary>
-    /// <param name="item"></param>
-    /// <summary>
-    /// Обновляет интерфейс для указанного предмета.
-    /// </summary>
-    /// <param name="item">Предмет для обновления.</param>
+    /// <param name="item">The item to update in the UI.</param>
     public void UpdateUI(InventoryLogic item)
     {
-        // Проверяем, есть ли предмет
+        // Iterate through the inventory slots
         foreach (var slot in inventorySlots)
         {
             if (slot.IsEmpty())
             {
-                // Если слот пустой, добавляем предмет
+                // Add the item to the first empty slot
                 slot.AddItemOrIncreaseQuantity(item);
                 return;
             }
             else if (slot.currentItem.inventoryID == item.inventoryID)
             {
-                // Если количество 0, очищаем слот
+                // If the item quantity is 0, remove it from the slot
                 if (item.quantity <= 0)
                 {
-                    slot.RemoveItem(); // Полностью очищает слот
+                    slot.RemoveItem();
                     return;
                 }
 
-                // Если предмет уже есть, обновляем количество
+                // If the item exists, update its quantity
                 slot.AddItemOrIncreaseQuantity(item);
                 return;
             }
         }
     }
-
 }

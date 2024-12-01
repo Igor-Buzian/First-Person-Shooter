@@ -3,60 +3,87 @@ using MalbersAnimations.Weapons;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Represents a slot in the inventory UI. Handles adding items, updating their quantity,
+/// and invoking specific logic when the slot is clicked.
+/// </summary>
 public class InventorySlot : MonoBehaviour
 {
-    public Image itemImage; // UI-элемент для отображения спрайта предмета
-    public Text itemQuantityText; // UI-элемент для отображения количества предметов
-    public InventoryLogic currentItem; // Текущий предмет в слоте
+    /// <summary>UI element for displaying the item's sprite.</summary>
+    public Image itemImage;
+
+    /// <summary>UI element for displaying the quantity of the item.</summary>
+    public Text itemQuantityText;
+
+    /// <summary>The current item stored in this slot.</summary>
+    public InventoryLogic currentItem;
+
+    /// <summary>Reference to the weapon manager for interacting with weapon logic.</summary>
     public MWeaponManager mWeaponManager;
+
     private Button slotButton;
+
+    /// <summary>Indicates whether this slot is active.</summary>
     public bool isActive;
+
+    /// <summary>
+    /// Initializes the slot. Sets up the button and verifies required components.
+    /// </summary>
     private void Start()
     {
         if (!isActive)
         {
-            this.enabled = false; // Отключаем скрипт, если isActive == false
+            this.enabled = false; // Disables the script if the slot is inactive
             return;
         }
-        // Проверяем наличие необходимых компонентов
+
+        // Check for necessary components
         slotButton = GetComponent<Button>();
         if (itemImage == null || slotButton == null)
         {
-            Debug.LogError($"[InventorySlot] На объекте {gameObject.name} отсутствует ссылка на itemImage.");
+            Debug.LogError($"[InventorySlot] Missing itemImage or slotButton on {gameObject.name}.");
             gameObject.SetActive(false);
             return;
         }
-        // Настраиваем начальный обработчик кнопки
-        slotButton.onClick.RemoveAllListeners();
 
+        // Clears existing listeners on the button
+        slotButton.onClick.RemoveAllListeners();
     }
 
+    /// <summary>
+    /// Adds an item to the slot or increases its quantity.
+    /// </summary>
+    /// <param name="item">The item to add or update.</param>
     public void AddItemOrIncreaseQuantity(InventoryLogic item)
     {
         if (item == null)
         {
-            Debug.LogError("[AddItemOrIncreaseQuantity] Переданный объект item равен null!");
+            Debug.LogError("[AddItemOrIncreaseQuantity] The provided item is null!");
             return;
         }
 
-        currentItem = item; // Назначаем текущий предмет
-        itemImage.sprite = item.spriteObject; // Устанавливаем спрайт
-        itemImage.enabled = true; // Показываем спрайт
+        currentItem = item; // Assign the current item
+        itemImage.sprite = item.spriteObject; // Set the sprite
+        itemImage.enabled = true; // Show the sprite
         UpdateQuantityText();
-        Debug.Log($"[AddItemOrIncreaseQuantity] Назначен предмет: {currentItem.Item.name}");
+        Debug.Log($"[AddItemOrIncreaseQuantity] Assigned item: {currentItem.Item.name}");
     }
 
+    /// <summary>
+    /// Logic to execute when the slot is clicked.
+    /// Executes based on the inventory ID of the current item.
+    /// </summary>
     public void OnClickLogic()
     {
         if (currentItem == null)
         {
-            Debug.LogWarning($"[OnClickLogic] currentItem равен null в слоте {gameObject.name}. Проверьте логику назначения предметов.");
+            Debug.LogWarning($"[OnClickLogic] Current item is null in slot {gameObject.name}. Check item assignment logic.");
             return;
         }
 
-        Debug.Log($"[OnClickLogic] Нажата кнопка для предмета: {currentItem.Item.name}");
+        Debug.Log($"[OnClickLogic] Slot clicked for item: {currentItem.Item.name}");
 
-        // Выполняем действие напрямую
+        // Perform action based on the item's inventory ID
         switch (currentItem.inventoryID)
         {
             case 0:
@@ -71,83 +98,93 @@ public class InventorySlot : MonoBehaviour
                 HealthPlayer(currentItem.Item);
                 break;
             default:
-                Debug.LogWarning($"[OnClickLogic] Неизвестный inventoryID: {currentItem.inventoryID}");
+                Debug.LogWarning($"[OnClickLogic] Unknown inventoryID: {currentItem.inventoryID}");
                 break;
         }
     }
 
+    /// <summary>
+    /// Adds bullets to a weapon object.
+    /// </summary>
+    /// <param name="weaponObject">The weapon to add bullets to.</param>
     private void AddBullets(GameObject weaponObject)
     {
         if (slotButton == null)
         {
-            Debug.LogError("[AddBullets] SlotButton не установлен!");
+            Debug.LogError("[AddBullets] SlotButton is not set!");
             return;
         }
 
         if (weaponObject == null)
         {
-            Debug.LogError("[AddBullets] weaponObject равен null!");
+            Debug.LogError("[AddBullets] weaponObject is null!");
             return;
         }
 
-        // Увеличиваем патроны сразу
+        // Immediately increase ammo
         var shootable = weaponObject.GetComponent<MShootable>();
         if (shootable == null)
         {
-            Debug.LogError("[AddBullets] У объекта weaponObject отсутствует компонент MShootable!");
+            Debug.LogError("[AddBullets] The weaponObject lacks the MShootable component!");
             return;
         }
 
         shootable.TotalAmmo += 30;
-        Debug.Log($"Патроны добавлены: {shootable.TotalAmmo} для оружия {weaponObject.name}");
+        Debug.Log($"Added bullets: {shootable.TotalAmmo} for weapon {weaponObject.name}");
 
-        // Удаляем предмет после успешного добавления патронов
+        // Remove the item after bullets are added
         RemoveItem();
     }
 
+    /// <summary>
+    /// Heals the player using the item.
+    /// </summary>
+    /// <param name="weaponObject">The object that triggers healing logic.</param>
     private void HealthPlayer(GameObject weaponObject)
     {
         if (slotButton == null)
         {
-            Debug.LogError("[HealthPlayer] SlotButton не установлен!");
+            Debug.LogError("[HealthPlayer] SlotButton is not set!");
             return;
         }
 
         if (weaponObject == null)
         {
-            Debug.LogError("[HealthPlayer] weaponObject равен null!");
+            Debug.LogError("[HealthPlayer] weaponObject is null!");
             return;
         }
 
-        // Увеличиваем здоровье сразу
+        // Immediately increase health
         var stats = weaponObject.GetComponent<Stats>();
         if (stats == null)
         {
-            Debug.LogError("[HealthPlayer] У объекта weaponObject отсутствует компонент Stats!");
+            Debug.LogError("[HealthPlayer] The weaponObject lacks the Stats component!");
             return;
         }
 
-        var healthStat = stats.stats[0]; // Предполагаем, что stats[0] — это здоровье
+        var healthStat = stats.stats[0]; // Assuming stats[0] is health
         healthStat.Value = Mathf.Min(healthStat.Value + 20, 100);
-        Debug.Log($"Здоровье увеличено до {healthStat.Value} для объекта {weaponObject.name}");
+        Debug.Log($"Health increased to {healthStat.Value} for object {weaponObject.name}");
 
-        // Удаляем предмет после успешного увеличения здоровья
+        // Remove the item after healing
         RemoveItem();
     }
 
-
-
+    /// <summary>
+    /// Configures the slot button to trigger weapon-related logic.
+    /// </summary>
+    /// <param name="weaponObject">The weapon object to associate with the button.</param>
     private void SetupSlotButton(GameObject weaponObject)
     {
         if (slotButton == null || mWeaponManager == null)
         {
-            Debug.LogError("[SetupSlotButton] SlotButton не установлен!");
+            Debug.LogError("[SetupSlotButton] SlotButton or mWeaponManager is not set!");
             return;
         }
 
         if (weaponObject == null)
         {
-            Debug.LogError("[SetupSlotButton] weaponObject равен null!");
+            Debug.LogError("[SetupSlotButton] weaponObject is null!");
             return;
         }
 
@@ -155,10 +192,13 @@ public class InventorySlot : MonoBehaviour
         slotButton.onClick.AddListener(() =>
         {
             mWeaponManager.Holster_SetWeapon(weaponObject);
-            Debug.Log($"Оружие {weaponObject.name} передано в Holster_SetWeapon.");
+            Debug.Log($"Weapon {weaponObject.name} passed to Holster_SetWeapon.");
         });
     }
 
+    /// <summary>
+    /// Updates the text displaying the quantity of the item in the slot.
+    /// </summary>
     public void UpdateQuantityText()
     {
         if (currentItem != null)
@@ -171,10 +211,13 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Removes an item from the slot. Decreases its quantity or clears the slot if quantity is 0.
+    /// </summary>
     public void RemoveItem()
     {
         currentItem.quantity--;
-        if(currentItem.quantity <= 0)
+        if (currentItem.quantity <= 0)
         {
             currentItem = null;
             itemImage.enabled = false;
@@ -183,6 +226,10 @@ public class InventorySlot : MonoBehaviour
         UpdateQuantityText();
     }
 
+    /// <summary>
+    /// Checks if the slot is empty.
+    /// </summary>
+    /// <returns>True if the slot has no item, false otherwise.</returns>
     public bool IsEmpty()
     {
         return currentItem == null;
