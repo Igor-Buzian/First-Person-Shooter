@@ -11,17 +11,13 @@ public class InventoryUI : MonoBehaviour
     /// <summary>Array of UI slots to represent inventory items.</summary>
     public InventorySlot[] inventorySlots;
 
-    /// <summary>
-    /// Subscribes to the inventory's item-added event to update the UI.
-    /// </summary>
+
     private void Start()
     {
         inventory.OnItemAdded += UpdateUI;
     }
 
-    /// <summary>
-    /// Unsubscribes from the inventory's item-added event when the UI is disabled.
-    /// </summary>
+
     private void OnDisable()
     {
         inventory.OnItemAdded -= UpdateUI;

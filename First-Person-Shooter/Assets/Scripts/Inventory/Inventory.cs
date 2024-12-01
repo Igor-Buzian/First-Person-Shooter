@@ -4,30 +4,36 @@ using UnityEngine;
 using MalbersAnimations;
 using System;
 
+
 public class InventoryLogic : EventArgs
 {
-    public int inventoryID; // Уникальный идентификатор предмета
-    public Sprite spriteObject; // Спрайт предмета
-    public int quantity; // Количество предметов
+    public int inventoryID; // Unique identifier for the item
+    public Sprite spriteObject; // Sprite of the item
+    public int quantity; // Quantity of items
     public GameObject Item;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InventoryLogic"/> class.
+    /// </summary>
     public InventoryLogic(int id, Sprite sprite, GameObject item)
     {
         inventoryID = id;
         spriteObject = sprite;
-        quantity = 1; // Начальное количество
+        quantity = 1; // Initial quantity
         Item = item;
     }
 }
+
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] public List<InventoryLogic> items = new List<InventoryLogic>(); // Список предметов в инвентаре
-    public GameObject inventoryPanel; // UI-панель инвентаря
-    public GameObject victoryCanvas; // Панель победы
+    [SerializeField] public List<InventoryLogic> items = new List<InventoryLogic>(); // List of items in the inventory
+    public GameObject inventoryPanel; // UI panel for the inventory
+    public GameObject victoryCanvas; // Victory panel
     InventoryUI inventoryUI;
     private bool useInventory;
     private string saveFilePath;
 
-    // Событие для обновления интерфейса
+    // Event for updating the interface
     public event System.Action<InventoryLogic> OnItemAdded;
 
     [Header("Player Input")]
@@ -35,17 +41,19 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1f;
         saveFilePath = Path.Combine(Application.persistentDataPath, "inventory.json");
 
-        // Подписываемся на событие VictoryCanvasEnabled
+        // Subscribe to the VictoryCanvasEnabled event
         var victoryCanvasComponent = victoryCanvas?.GetComponent<VictoryCanvasEnabled>();
         if (victoryCanvasComponent != null)
         {
             victoryCanvasComponent.OnVictoryCanvasEnabled += SaveInventory;
         }
         LoadInventory();
-        //  ClearInventory();
+        // ClearInventory();
     }
+
     private void Start()
     {
         if (File.Exists(saveFilePath))
@@ -55,14 +63,12 @@ public class Inventory : MonoBehaviour
             {
                 inventoryUI.UpdateUI(item);
             }
-
         }
-
     }
 
     private void OnDestroy()
     {
-        // Отписываемся от события, чтобы избежать утечек памяти
+        // Unsubscribe from the event to prevent memory leaks
         var victoryCanvasComponent = victoryCanvas?.GetComponent<VictoryCanvasEnabled>();
         if (victoryCanvasComponent != null)
         {
@@ -72,57 +78,63 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        // Открытие/закрытие инвентаря
+        // Open/close the inventory
         if (Input.GetKeyDown(KeyCode.I))
         {
             useInventory = !useInventory;
             if (useInventory)
             {
-                Time.timeScale = 0.0001f;
-                malbersPlayerInput.enabled = false;
+                Time.timeScale = 0.0001f; // Pause the game
+                malbersPlayerInput.enabled = false; // Disable player input
             }
             else
             {
-                Time.timeScale = 1f;
-                malbersPlayerInput.enabled = true;
+                Time.timeScale = 1f; // Resume the game
+                malbersPlayerInput.enabled = true; // Enable player input
             }
             inventoryPanel.SetActive(useInventory);
         }
     }
 
+    /// <summary>
+    /// Adds an item to the inventory.
+    /// </summary>
+    /// <param name="item">The item to be added.</param>
     public void AddItem(InventoryLogic item)
     {
         foreach (var existingItem in items)
         {
-            // Проверяем, есть ли предмет с таким же ID
+            // Check if the item with the same ID exists
             if (existingItem.inventoryID == item.inventoryID)
             {
-                existingItem.quantity += item.quantity; // Увеличиваем количество
-                OnItemAdded?.Invoke(existingItem);     // Обновляем интерфейс
+                existingItem.quantity += item.quantity; // Increase quantity
+                OnItemAdded?.Invoke(existingItem); // Update the interface
                 return;
             }
         }
 
-        // Если предмет новый, добавляем его в инвентарь
+        // If the item is new, add it to the inventory
         items.Add(item);
         Debug.Log($"Added new item with ID {item.inventoryID}. Quantity: {item.quantity}");
         OnItemAdded?.Invoke(item);
     }
 
-
+    /// <summary>
+    /// Saves the inventory to a JSON file.
+    /// </summary>
     public void SaveInventory()
     {
         var inventoryData = new List<InventorySlotData>();
 
-        // Сохраняем данные всех предметов в инвентаре
+        // Save data for all items in the inventory
         foreach (var item in items)
         {
             var slotData = new InventorySlotData
             {
-                itemName = item.quantity > 0 ? item.Item.name : null, // null для пустых слотов
-                inventoryID = item.quantity > 0 ? item.inventoryID : -1, // -1 для пустых слотов
-                quantity = item.quantity, // Сохраняем количество, включая 0
-                spritePath = item.spriteObject != null && item.quantity > 0 ? item.spriteObject.name : "" // Сохраняем путь для спрайта
+                itemName = item.quantity > 0 ? item.Item.name : null, // null for empty slots
+                inventoryID = item.quantity > 0 ? item.inventoryID : -1, // -1 for empty slots
+                quantity = item.quantity, // Save quantity, including 0
+                spritePath = item.spriteObject != null && item.quantity > 0 ? item.spriteObject.name : "" // Save path for sprite
             };
 
             inventoryData.Add(slotData);
@@ -131,36 +143,39 @@ public class Inventory : MonoBehaviour
         string json = JsonUtility.ToJson(new InventoryData { slots = inventoryData }, true);
         File.WriteAllText(saveFilePath, json);
 
-        Debug.Log($"Инвентарь сохранен в файл: {saveFilePath}");
+        Debug.Log($"Inventory saved to file: {saveFilePath}");
     }
 
+    /// <summary>
+    /// Loads the inventory from a JSON file.
+    /// </summary>
     public void LoadInventory()
     {
         if (!File.Exists(saveFilePath))
         {
-            Debug.LogWarning("Файл сохранения инвентаря не найден!");
+            Debug.LogWarning("Inventory save file not found!");
             return;
         }
 
-        // Чтение JSON из файла
+        // Read JSON from the file
         string json = File.ReadAllText(saveFilePath);
 
-        // Десериализация JSON в объект InventoryData
+        // Deserialize JSON into an InventoryData object
         InventoryData inventoryData = JsonUtility.FromJson<InventoryData>(json);
 
         if (inventoryData == null || inventoryData.slots == null)
         {
-            Debug.LogWarning("Инвентарь пуст или файл поврежден.");
+            Debug.LogWarning("Inventory is empty or the file is corrupted.");
             return;
         }
 
-        // Очистка текущего инвентаря
+        // Clear the current inventory
         items.Clear();
 
-        // Воссоздание предметов в инвентаре
+        // Recreate items in the inventory
         foreach (var slotData in inventoryData.slots)
         {
-            // Загружаем необходимые ресурсы
+            // Load necessary resources
             Sprite sprite = Resources.Load<Sprite>(slotData.spritePath);
             GameObject itemObject = Resources.Load<GameObject>(slotData.itemName);
 
@@ -175,25 +190,28 @@ public class Inventory : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Не удалось загрузить объект с именем {slotData.itemName}");
+                Debug.LogWarning($"Failed to load object with name {slotData.itemName}");
             }
         }
 
-        Debug.Log("Инвентарь загружен.");
+        Debug.Log("Inventory loaded.");
     }
+
+    /// <summary>
+    /// Clears the inventory and deletes the save file.
+    /// </summary>
     public void ClearInventory()
     {
-        // Очищаем список
+        // Clear the list
         items.Clear();
 
-        // Удаляем файл
+        // Delete the file
         if (File.Exists(saveFilePath))
         {
             File.Delete(saveFilePath);
-            Debug.Log("Файл инвентаря удален.");
+            Debug.Log("Inventory file deleted.");
         }
 
-        Debug.Log("Инвентарь очищен.");
+        Debug.Log("Inventory cleared.");
     }
-
 }

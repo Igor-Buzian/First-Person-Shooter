@@ -12,6 +12,9 @@ public class Live : MonoBehaviour
     {
         StartCoroutine(LoadCurrentScene());
     }
+    /// <summary>
+    /// It creates a delay before Clearing enemy body
+    /// </summary>
     public void EnemyDeath()
     {
         StartCoroutine(ClearBody());
@@ -22,9 +25,7 @@ public class Live : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    /// <summary>
-    /// It creates a delay before Clearing enemy body
-    /// </summary>
+
     IEnumerator ClearBody()
     {
         yield return new WaitForSeconds(5f);

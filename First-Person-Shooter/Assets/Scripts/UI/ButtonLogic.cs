@@ -29,6 +29,7 @@ public class ButtonLogic : MonoBehaviour
     /// </summary>
     public void QuitButton()
     {
+        Time.timeScale = 1;
         Application.Quit(); // Quit the application
     }
 

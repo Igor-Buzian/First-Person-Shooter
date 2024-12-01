@@ -53,18 +53,13 @@ public class SupportItems : MonoBehaviour
 
     private InventoryLogic item;
 
-    /// <summary>
-    /// Initializes the item logic when the script starts.
-    /// </summary>
+
     private void Start()
     {
         item = new InventoryLogic(inventoryId, objectSprite, ItemForConnect);
     }
 
-    /// <summary>
-    /// Detects when the player collides with the item and collects it.
-    /// </summary>
-    /// <param name="other">The collider that entered the trigger zone.</param>
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
