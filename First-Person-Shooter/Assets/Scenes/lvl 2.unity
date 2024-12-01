@@ -27250,7 +27250,7 @@ MonoBehaviour:
   inventoryId: 2
   objectSprite: {fileID: 21300000, guid: 14d4bb33bda22f246b3a9e83194e10cf, type: 3}
   inventory: {fileID: 1930669134}
-  ItemForConnect: {fileID: 0}
+  ItemForConnect: {fileID: 267090854957756925, guid: 0a062809233ab7e499273ab1b7794fd4, type: 3}
 --- !u!23 &931834909
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -33649,7 +33649,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 2000
-  field of view: 60.000004
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -35483,7 +35483,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 5170218139365809361}
   m_Lens:
-    FieldOfView: 60.000004
+    FieldOfView: 40
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 2000
@@ -49592,7 +49592,7 @@ MonoBehaviour:
   inventoryId: 3
   objectSprite: {fileID: 21300000, guid: 65a5fee376c9a2c48bb1b0b9e8a72ff8, type: 3}
   inventory: {fileID: 1930669134}
-  ItemForConnect: {fileID: 0}
+  ItemForConnect: {fileID: 4248502775473930830, guid: f41bd41d79ffdd7479f84c7035bb697e, type: 3}
 --- !u!23 &1677550333
 MeshRenderer:
   m_ObjectHideFlags: 0

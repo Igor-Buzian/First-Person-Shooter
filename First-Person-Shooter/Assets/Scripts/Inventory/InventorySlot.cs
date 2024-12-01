@@ -26,12 +26,18 @@ public class InventorySlot : MonoBehaviour
     /// <summary>Indicates whether this slot is active.</summary>
     public bool isActive;
 
-    /// <summary>
-    /// Initializes the slot. Sets up the button and verifies required components.
-    /// </summary>
+    Stats stats;
     private void Start()
     {
-        if (!isActive)
+        var playerObject = GameObject.FindWithTag("Player");
+
+
+        if (playerObject != null)
+        {
+            // Получаем компонент Stats с объекта игрока
+            stats = playerObject.GetComponent<Stats>();
+        }
+            if (!isActive)
         {
             this.enabled = false; // Disables the script if the slot is inactive
             return;
@@ -155,7 +161,7 @@ public class InventorySlot : MonoBehaviour
         }
 
         // Immediately increase health
-        var stats = weaponObject.GetComponent<Stats>();
+        //var stats = weaponObject.GetComponent<Stats>();
         if (stats == null)
         {
             Debug.LogError("[HealthPlayer] The weaponObject lacks the Stats component!");

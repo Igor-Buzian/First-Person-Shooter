@@ -4774,7 +4774,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 2000
-  field of view: 60.000004
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -6063,7 +6063,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 5170218139365809361}
   m_Lens:
-    FieldOfView: 60.000004
+    FieldOfView: 40
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 2000
@@ -50499,7 +50499,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b40ee49102b6e4fa7efe7b1e2ff2e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeathAllEnemies: {fileID: 8272983037013805824}
+--- !u!114 &7117139278947829418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5175850389482318251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fdecb89e10038244b87c2a5325e6423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FindTarget: 0
+  Target: {fileID: 0}
+  ReactOnEnable: 0
+  ReactOnDisable: 0
+  reaction:
+    rid: 5723820084406255616
+  references:
+    version: 2
+    RefIds:
+    - rid: 5723820084406255616
+      type: {class: StatReaction, ns: MalbersAnimations.Reactions, asm: MalbersAnimations}
+      data:
+        Active: 1
+        useLocalTarget: 0
+        LocalTarget: {fileID: 0}
+        delay: 0
+        modifiers:
+        - ID: {fileID: 11400000, guid: d6b3e636d59a6c547a2cad40b69f4432, type: 2}
+          modify: 1
+          MinValue:
+            UseConstant: 1
+            ConstantValue: 10
+            Variable: {fileID: 11400000, guid: cdc4fbfe579ca82478286fa71b0bd4eb, type: 2}
+          MaxValue:
+            UseConstant: 1
+            ConstantValue: 25
+            Variable: {fileID: 11400000, guid: cdc4fbfe579ca82478286fa71b0bd4eb, type: 2}
+          enable:
+            UseConstant: 0
+            ConstantValue: 0
+            Variable: {fileID: 0}
 --- !u!1 &7118599760592794884
 GameObject:
   m_ObjectHideFlags: 0
@@ -52599,7 +52641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b40ee49102b6e4fa7efe7b1e2ff2e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeathAllEnemies: {fileID: 0}
 --- !u!4 &8366616972727947592
 Transform:
   m_ObjectHideFlags: 0
@@ -53081,6 +53122,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3084425874824347344, guid: 3f06e67a3ae76ab408717716d2c52a02, type: 3}
       insertIndex: 10
       addedObject: {fileID: 7117139278947829417}
+    - targetCorrespondingSourceObject: {fileID: 3084425874824347344, guid: 3f06e67a3ae76ab408717716d2c52a02, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7117139278947829418}
   m_SourcePrefab: {fileID: 100100000, guid: 3f06e67a3ae76ab408717716d2c52a02, type: 3}
 --- !u!1 &8621442692940567942
 GameObject:
